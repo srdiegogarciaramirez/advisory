@@ -1,0 +1,109 @@
+@import "tailwindcss";
+
+/* ─────────────────────────────────────────────────────────────
+   SISTEMA DE DISEÑO — tokens de color y tipografía
+   Paleta premium: azul tinta profundo + oro cálido + crema.
+   ───────────────────────────────────────────────────────────── */
+@theme {
+  --color-ink: #0a1a29;
+  --color-ink-900: #0c1f31;
+  --color-ink-800: #12293e;
+  --color-ink-700: #1b3a55;
+  --color-ink-600: #274c6d;
+
+  --color-gold: #c6a15b;
+  --color-gold-light: #dcc188;
+  --color-gold-dark: #a9843f;
+
+  --color-cream: #f8f4ec;
+  --color-sand: #efe8da;
+  --color-sand-dark: #e2d8c4;
+
+  --color-muted: #5b6b78;
+
+  --font-serif: var(--font-fraunces), Georgia, "Times New Roman", serif;
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+
+  --shadow-soft: 0 1px 2px rgba(10, 26, 41, 0.04),
+    0 8px 24px rgba(10, 26, 41, 0.06);
+  --shadow-lift: 0 12px 40px rgba(10, 26, 41, 0.12);
+}
+
+/* ── Base ─────────────────────────────────────────────────── */
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background-color: var(--color-cream);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background-color: var(--color-gold);
+  color: var(--color-ink);
+}
+
+/* Respeta usuarios con scroll reducido */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  * {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+/* ── Utilidades de composición ────────────────────────────── */
+.container-x {
+  width: 100%;
+  max-width: 1180px;
+  margin-inline: auto;
+  padding-inline: 1.5rem;
+}
+
+.eyebrow {
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+/* Línea decorativa fina */
+.hairline {
+  height: 1px;
+  background: linear-gradient(
+    to right,
+    transparent,
+    var(--color-gold),
+    transparent
+  );
+}
+
+/* Fondo de textura sutil para secciones oscuras */
+.bg-grid {
+  background-image: radial-gradient(
+    rgba(198, 161, 91, 0.09) 1px,
+    transparent 1px
+  );
+  background-size: 22px 22px;
+}
+
+/* ── Animación de aparición al hacer scroll ───────────────── */
+.reveal {
+  opacity: 0;
+  transform: translateY(22px);
+  transition:
+    opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
+.reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
