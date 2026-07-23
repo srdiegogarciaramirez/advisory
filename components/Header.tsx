@@ -1,21 +1,17 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { site } from "@/lib/site";
-
-const navItems = [
-  { href: "#servicios", label: "Servicios" },
-  { href: "#proceso", label: "Proceso" },
-  { href: "#diferenciadores", label: "Por qué yo" },
-  { href: "#preguntas", label: "Preguntas" },
-];
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { site, nav } from "@/lib/site";
 
 export default function Header() {
+  const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 12);
+    const onScroll = () => setScrolled(window.scrollY > 8);
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
@@ -28,99 +24,93 @@ export default function Header() {
     };
   }, [open]);
 
+  const isActive = (href: string) =>
+    href === "/" ? pathname === "/" : pathname.startsWith(href);
+
   return (
     <header
-      className={`fixed inset-x-0 top-0 z-50 transition-all duration-300 ${
+      className={`fixed inset-x-0 top-0 z-50 transition-colors duration-300 ${
         scrolled
-          ? "bg-ink/95 backdrop-blur-md shadow-[0_1px_0_rgba(198,161,91,0.18)]"
-          : "bg-transparent"
+          ? "border-b border-line/70 bg-paper/90 backdrop-blur-md"
+          : "border-b border-transparent bg-transparent"
       }`}
     >
-      <div className="container-x flex h-[72px] items-center justify-between">
-        {/* Logo */}
-        <a href="#top" className="group flex items-center gap-3">
-          <span className="flex h-10 w-10 items-center justify-center rounded-md border border-gold/50 bg-ink-800 font-serif text-gold">
+      <div className="container-x flex h-[76px] items-center justify-between">
+        <Link href="/" className="flex items-center gap-3" onClick={() => setOpen(false)}>
+          <span className="flex h-10 w-10 items-center justify-center border border-ink/25 font-serif text-[0.95rem] text-ink">
             {site.brandShort}
           </span>
           <span className="flex flex-col leading-none">
-            <span className="font-serif text-[1.05rem] text-cream">
-              {site.brand}
+            <span className="font-serif text-[1.15rem] tracking-tight text-ink">
+              {site.wordmark}
             </span>
-            <span className="text-[0.62rem] uppercase tracking-[0.16em] text-gold/80">
-              Capital para vivienda
+            <span className="mt-1 text-[0.58rem] uppercase tracking-[0.22em] text-muted">
+              {site.descriptor}
             </span>
           </span>
-        </a>
+        </Link>
 
-        {/* Nav desktop */}
-        <nav className="hidden items-center gap-8 md:flex">
-          {navItems.map((item) => (
-            <a
+        <nav className="hidden items-center gap-9 lg:flex">
+          {nav.slice(1).map((item) => (
+            <Link
               key={item.href}
               href={item.href}
-              className="relative text-sm text-cream/80 transition-colors hover:text-cream after:absolute after:-bottom-1.5 after:left-0 after:h-px after:w-0 after:bg-gold after:transition-all hover:after:w-full"
+              data-active={isActive(item.href)}
+              className={`navlink text-[0.82rem] font-medium tracking-wide transition-colors ${
+                isActive(item.href) ? "text-ink" : "text-muted hover:text-ink"
+              }`}
             >
               {item.label}
-            </a>
+            </Link>
           ))}
-          <a
-            href="#contacto"
-            className="rounded-full bg-gold px-5 py-2.5 text-sm font-semibold text-ink transition-transform hover:-translate-y-0.5 hover:bg-gold-light"
+          <Link
+            href="/contacto"
+            className="border border-ink bg-ink px-5 py-2.5 text-[0.8rem] font-medium tracking-wide text-paper transition-colors hover:bg-transparent hover:text-ink"
           >
-            Agenda una consulta
-          </a>
+            Contáctanos
+          </Link>
         </nav>
 
-        {/* Botón móvil */}
         <button
           type="button"
           aria-label="Abrir menú"
           aria-expanded={open}
           onClick={() => setOpen((v) => !v)}
-          className="flex h-10 w-10 flex-col items-center justify-center gap-1.5 md:hidden"
+          className="flex h-10 w-10 flex-col items-center justify-center gap-[5px] lg:hidden"
         >
-          <span
-            className={`h-0.5 w-6 bg-cream transition-transform ${
-              open ? "translate-y-2 rotate-45" : ""
-            }`}
-          />
-          <span
-            className={`h-0.5 w-6 bg-cream transition-opacity ${
-              open ? "opacity-0" : ""
-            }`}
-          />
-          <span
-            className={`h-0.5 w-6 bg-cream transition-transform ${
-              open ? "-translate-y-2 -rotate-45" : ""
-            }`}
-          />
+          <span className={`h-px w-6 bg-ink transition-transform ${open ? "translate-y-[6px] rotate-45" : ""}`} />
+          <span className={`h-px w-6 bg-ink transition-opacity ${open ? "opacity-0" : ""}`} />
+          <span className={`h-px w-6 bg-ink transition-transform ${open ? "-translate-y-[6px] -rotate-45" : ""}`} />
         </button>
       </div>
 
       {/* Menú móvil */}
       <div
-        className={`md:hidden overflow-hidden bg-ink/98 backdrop-blur-md transition-[max-height] duration-300 ${
-          open ? "max-h-96 border-t border-gold/15" : "max-h-0"
+        className={`overflow-hidden border-t bg-paper transition-[max-height] duration-300 lg:hidden ${
+          open ? "max-h-[420px] border-line" : "max-h-0 border-transparent"
         }`}
       >
-        <nav className="container-x flex flex-col gap-1 py-4">
-          {navItems.map((item) => (
-            <a
+        <nav className="container-x flex flex-col py-3">
+          {nav.map((item) => (
+            <Link
               key={item.href}
               href={item.href}
               onClick={() => setOpen(false)}
-              className="rounded-lg px-2 py-3 text-cream/85 transition-colors hover:bg-ink-800 hover:text-cream"
+              data-active={isActive(item.href)}
+              className={`border-b border-line/60 py-3.5 text-[0.95rem] ${
+                isActive(item.href) ? "text-ink" : "text-muted"
+              }`}
             >
               {item.label}
-            </a>
+            </Link>
           ))}
-          <a
-            href="#contacto"
+          <Link
+            href="/contacto"
             onClick={() => setOpen(false)}
-            className="mt-2 rounded-full bg-gold px-5 py-3 text-center font-semibold text-ink"
+            className="mt-4 bg-ink px-5 py-3 text-center text-sm font-medium text-paper"
           >
-            Agenda una consulta
-          </a>
+            Contáctanos
+          </Link>
         </nav>
       </div>
     </header>

@@ -1,99 +1,94 @@
-import { site, links } from "@/lib/site";
-import { IconWhatsApp, IconMail, IconLinkedIn } from "./Icons";
+import Link from "next/link";
+import { site, links, nav } from "@/lib/site";
+import { IconArrow } from "./Icons";
 
 export default function Footer() {
-  const year = 2025;
   return (
-    <footer className="border-t border-gold/15 bg-ink text-cream">
-      <div className="container-x py-14">
-        <div className="flex flex-col gap-10 md:flex-row md:items-start md:justify-between">
-          {/* Marca */}
-          <div className="max-w-sm">
-            <div className="flex items-center gap-3">
-              <span className="flex h-10 w-10 items-center justify-center rounded-md border border-gold/50 bg-ink-800 font-serif text-gold">
-                {site.brandShort}
-              </span>
-              <span className="font-serif text-lg">{site.brand}</span>
-            </div>
-            <p className="mt-4 text-sm leading-relaxed text-cream/60">
-              {site.tagline}. Estructuración y levantamiento de crédito puente
-              para construcción y equity para desarrolladores de vivienda.
-            </p>
+    <footer className="bg-ink text-paper">
+      {/* Franja CTA */}
+      <div className="border-b border-paper/10">
+        <div className="container-x flex flex-col gap-6 py-14 md:flex-row md:items-center md:justify-between">
+          <div>
+            <p className="label text-sage">¿Tienes un proyecto?</p>
+            <h2 className="mt-3 max-w-xl font-serif text-2xl leading-snug sm:text-3xl">
+              Conversemos sobre la estructura de capital de tu desarrollo.
+            </h2>
           </div>
+          <Link
+            href="/contacto"
+            className="arrow-link shrink-0 border border-paper/40 px-6 py-3.5 text-sm font-medium text-paper transition-colors hover:border-sage hover:text-sage"
+          >
+            Iniciar conversación
+            <IconArrow width={17} height={17} />
+          </Link>
+        </div>
+      </div>
 
-          {/* Navegación */}
-          <div className="flex flex-col gap-3 text-sm">
-            <p className="eyebrow text-gold/70">Navegación</p>
-            <a href="#servicios" className="text-cream/70 hover:text-gold">
-              Servicios
-            </a>
-            <a href="#proceso" className="text-cream/70 hover:text-gold">
-              Proceso
-            </a>
-            <a href="#diferenciadores" className="text-cream/70 hover:text-gold">
-              Por qué yo
-            </a>
-            <a href="#preguntas" className="text-cream/70 hover:text-gold">
-              Preguntas
-            </a>
+      <div className="container-x grid gap-10 py-16 md:grid-cols-[1.4fr_1fr_1fr]">
+        <div className="max-w-sm">
+          <div className="flex items-center gap-3">
+            <span className="flex h-10 w-10 items-center justify-center border border-paper/30 font-serif text-paper">
+              {site.brandShort}
+            </span>
+            <span className="font-serif text-xl">{site.wordmark}</span>
           </div>
-
-          {/* Contacto */}
-          <div className="flex flex-col gap-3 text-sm">
-            <p className="eyebrow text-gold/70">Contacto</p>
-            <a href={links.email} className="text-cream/70 hover:text-gold">
-              {site.email}
-            </a>
-            <a
-              href={links.whatsapp}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-cream/70 hover:text-gold"
-            >
-              {site.phoneDisplay}
-            </a>
-            <span className="text-cream/50">{site.city}</span>
-
-            <div className="mt-2 flex gap-3">
-              <a
-                href={links.whatsapp}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="WhatsApp"
-                className="flex h-10 w-10 items-center justify-center rounded-full border border-cream/15 text-cream/70 transition-colors hover:border-gold hover:text-gold"
-              >
-                <IconWhatsApp width={18} height={18} />
-              </a>
-              <a
-                href={links.email}
-                aria-label="Email"
-                className="flex h-10 w-10 items-center justify-center rounded-full border border-cream/15 text-cream/70 transition-colors hover:border-gold hover:text-gold"
-              >
-                <IconMail width={18} height={18} />
-              </a>
-              {site.linkedin ? (
-                <a
-                  href={site.linkedin}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label="LinkedIn"
-                  className="flex h-10 w-10 items-center justify-center rounded-full border border-cream/15 text-cream/70 transition-colors hover:border-gold hover:text-gold"
-                >
-                  <IconLinkedIn width={18} height={18} />
-                </a>
-              ) : null}
-            </div>
-          </div>
+          <p className="mt-5 text-sm leading-relaxed text-paper/60">
+            {site.tagline}
+          </p>
+          <p className="mt-6 text-xs uppercase tracking-[0.18em] text-paper/40">
+            {site.hq}
+          </p>
         </div>
 
-        <div className="mt-12 flex flex-col gap-3 border-t border-cream/10 pt-6 text-xs text-cream/45 sm:flex-row sm:items-center sm:justify-between">
-          <p>
-            © {year} {site.brand}. Todos los derechos reservados.
-          </p>
+        <div>
+          <p className="label text-sage">Navegación</p>
+          <ul className="mt-5 space-y-3 text-sm">
+            {nav.map((item) => (
+              <li key={item.href}>
+                <Link href={item.href} className="text-paper/70 transition-colors hover:text-paper">
+                  {item.label}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <div>
+          <p className="label text-sage">Contacto</p>
+          <ul className="mt-5 space-y-3 text-sm">
+            <li>
+              <a href={links.email} className="text-paper/70 transition-colors hover:text-paper">
+                {site.email}
+              </a>
+            </li>
+            <li>
+              <a href={links.whatsapp} target="_blank" rel="noopener noreferrer" className="text-paper/70 transition-colors hover:text-paper">
+                WhatsApp · {site.phoneDisplay}
+              </a>
+            </li>
+            <li>
+              <a href={links.phone} className="text-paper/70 transition-colors hover:text-paper">
+                {site.phoneDisplay}
+              </a>
+            </li>
+            {site.linkedin ? (
+              <li>
+                <a href={site.linkedin} target="_blank" rel="noopener noreferrer" className="text-paper/70 transition-colors hover:text-paper">
+                  LinkedIn
+                </a>
+              </li>
+            ) : null}
+          </ul>
+        </div>
+      </div>
+
+      <div className="border-t border-paper/10">
+        <div className="container-x flex flex-col gap-3 py-6 text-xs text-paper/40 sm:flex-row sm:items-center sm:justify-between">
+          <p>© {2025} {site.brand}. Todos los derechos reservados.</p>
           <p className="max-w-lg">
-            Este sitio es informativo y no constituye una oferta de crédito ni
-            asesoría de inversión. Cada operación se sujeta a due diligence y a
-            las condiciones de las contrapartes financieras.
+            Sitio informativo. No constituye una oferta de crédito ni asesoría de
+            inversión. Cada operación se sujeta a due diligence y a las
+            condiciones de las contrapartes financieras.
           </p>
         </div>
       </div>

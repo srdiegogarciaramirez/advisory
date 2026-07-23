@@ -1,10 +1,12 @@
-# Landing page — Advisory de capital para desarrollo de vivienda
+# Sitio institucional — Asesoría de Capital Inmobiliario
 
-Sitio web (landing page) para un servicio de **advisory** dirigido a
-desarrolladores inmobiliarios de vivienda: estructuración y levantamiento de
-**crédito puente para construcción** y **equity raising**.
+Sitio web multi-página para una **firma boutique de asesoría de capital
+inmobiliario** especializada en desarrollo de vivienda: estructuración y
+levantamiento de **crédito puente**, **deuda** y **equity**.
 
 Construido con **Next.js 16 (App Router)**, **TypeScript** y **Tailwind CSS v4**.
+Estética institucional (paper cálido · tinta · verde pino), con tipografía
+**Newsreader** (serif editorial) e **Inter**.
 
 ---
 
@@ -12,84 +14,75 @@ Construido con **Next.js 16 (App Router)**, **TypeScript** y **Tailwind CSS v4**
 
 ```bash
 npm install       # instala dependencias
-npm run dev       # servidor de desarrollo → http://localhost:3000
+npm run dev       # desarrollo → http://localhost:3000
 npm run build     # build de producción
 npm run start     # sirve el build de producción
 ```
 
 ---
 
-## ✏️ Personalización (lo más importante)
+## 🗺️ Páginas
 
-**Casi todo el contenido editable está en un solo archivo:**
-
-### `lib/site.ts`
-
-Ahí reemplazas los placeholders marcados con `// TODO`:
-
-- **Marca:** `brand`, `brandShort` (iniciales del logo), `advisorName`
-- **Contacto:** `email`, `phoneRaw` / `phoneDisplay`, `whatsappRaw`, `city`
-- **Calendario:** `calendarUrl` (Calendly / Cal.com — opcional; si lo llenas
-  aparece un botón "reserva en mi calendario")
-- **Redes:** `linkedin` (opcional; deja `""` para ocultar)
-- **SEO:** `domain`, `seoTitle`, `seoDescription`
-- **Cifras / prueba social:** el arreglo `stats` (capital estructurado,
-  proyectos, aliados, años)
-
-> ⚠️ Formato de teléfono: usa código de país + número **sin** el símbolo `+`
-> ni espacios (ej. `525512345678`). Eso hace que los links de WhatsApp y
-> llamada funcionen bien.
-
-### Textos de las secciones
-
-Si quieres afinar la redacción de cada sección, están en:
-
-| Sección | Archivo |
+| Ruta | Página |
 |---|---|
-| Encabezado / navegación | `components/Header.tsx` |
-| Hero (portada) | `components/Hero.tsx` |
-| Cifras | usa `lib/site.ts` → `stats` |
-| Servicios | `components/Services.tsx` |
-| Proceso | `components/Process.tsx` |
-| Por qué yo | `components/WhyMe.tsx` |
-| Preguntas frecuentes | `components/FAQ.tsx` |
-| Contacto | `components/Contact.tsx` |
-| Pie de página | `components/Footer.tsx` |
-
-### Colores y tipografía
-
-El sistema de diseño (paleta azul tinta + oro + crema y las fuentes) está en
-`app/globals.css`, bloque `@theme`. Cambia ahí los tokens de color si quieres
-otra identidad visual.
+| `/` | Inicio — hero, track record, la firma, soluciones, transacciones, segmentos |
+| `/firma` | La Firma — statement, principios, proceso, liderazgo |
+| `/soluciones` | Soluciones de Capital — las 6 soluciones en detalle + proceso |
+| `/transacciones` | Transacciones — track record + operaciones representativas |
+| `/contacto` | Contacto — canales directos, oficinas y formulario |
 
 ---
 
-## 📩 Cómo llegan los mensajes de contacto
+## ✏️ Personalización
 
-El formulario **abre el cliente de correo del visitante** con un email ya
-redactado dirigido a tu dirección (`site.email`). No se guarda nada en un
-servidor — es privado y sin backend.
+**Casi todo el contenido editable está en `lib/site.ts`:** marca, contacto,
+oficinas, liderazgo, SEO, y los arreglos de `solutions`, `sectors`,
+`transactions`, `pillars` y `process`. Los valores con `// TODO` son
+placeholders que debes reemplazar por tu información real.
 
-También hay botones directos de **WhatsApp**, **email** y **teléfono**, más un
-botón flotante de WhatsApp.
+### Colores y tipografía
+El sistema de diseño (paleta y fuentes) vive en `app/globals.css`, bloque
+`@theme`.
 
-**¿Quieres recibir los leads automáticamente en tu correo (sin que el visitante
-tenga que enviar el email)?** Se puede conectar el formulario a un servicio como
-[Formspree](https://formspree.io/) o [Netlify Forms](https://docs.netlify.com/forms/setup/).
-Avísame y lo configuro.
+---
+
+## 🖼️ Imágenes
+
+El sitio usa **placeholders arquitectónicos duotono** (componente
+`components/Media.tsx`) donde irían fotos reales, porque el entorno de
+desarrollo no permite descargar imágenes externas.
+
+**Para usar fotos reales**, es muy sencillo:
+
+1. Deja tus imágenes en `public/images/` (por ejemplo `public/images/torre.jpg`).
+2. Pásalas al componente con la prop `src`:
+
+```tsx
+<Media src="/images/torre.jpg" alt="Proyecto en construcción" className="aspect-[4/5] w-full" />
+```
+
+Si `src` está presente, se muestra la foto (optimizada con `next/image`); si no,
+se dibuja el placeholder. Puedes reemplazar imagen por imagen a tu ritmo.
+
+---
+
+## 📩 Contacto / leads
+
+El formulario de `/contacto` **abre el cliente de correo del visitante** con un
+email ya redactado hacia tu dirección (`site.email`). No hay backend ni se
+almacenan datos. También hay botones directos de WhatsApp, email y teléfono.
+
+**¿Quieres recibir los leads automáticamente en tu correo?** Se puede conectar
+el formulario a [Formspree](https://formspree.io/) o
+[Netlify Forms](https://docs.netlify.com/forms/setup/) — avísame y lo configuro.
 
 ---
 
 ## ☁️ Despliegue
 
-Este proyecto está listo para desplegarse en **Vercel** (recomendado para
-Next.js) o cualquier plataforma que soporte Node.js:
-
-1. Sube el repositorio a GitHub (ya está en la rama de trabajo).
-2. Importa el repo en [vercel.com](https://vercel.com) → detecta Next.js solo.
-3. Deploy. Configura tu dominio en el panel de Vercel.
-
-No requiere variables de entorno para funcionar.
+Listo para **Vercel** (recomendado para Next.js) o cualquier plataforma con
+Node.js. Importa el repo en Vercel, detecta Next.js automáticamente y despliega.
+No requiere variables de entorno.
 
 ---
 
@@ -97,10 +90,12 @@ No requiere variables de entorno para funcionar.
 
 ```
 app/
-  layout.tsx        # metadata, fuentes, SEO
-  page.tsx          # ensambla las secciones + JSON-LD
-  globals.css       # sistema de diseño (colores, tipografía, utilidades)
-components/          # cada sección de la landing
+  layout.tsx          # fuentes, metadata, Header + Footer globales
+  page.tsx            # Inicio
+  firma/ soluciones/ transacciones/ contacto/   # páginas
+  globals.css         # sistema de diseño (@theme)
+components/
+  Header, Footer, PageHero, Media, UI, ContactForm, Reveal, Icons
 lib/
-  site.ts           # ⭐ configuración central editable
+  site.ts             # ⭐ configuración central editable
 ```

@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
-import { Fraunces, Inter } from "next/font/google";
+import { Newsreader, Inter } from "next/font/google";
 import { site } from "@/lib/site";
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
 import "./globals.css";
 
 const inter = Inter({
@@ -9,26 +11,29 @@ const inter = Inter({
   display: "swap",
 });
 
-const fraunces = Fraunces({
+const newsreader = Newsreader({
   subsets: ["latin"],
-  variable: "--font-fraunces",
+  variable: "--font-newsreader",
   display: "swap",
-  axes: ["opsz"],
+  style: ["normal", "italic"],
 });
 
 export const metadata: Metadata = {
   metadataBase: new URL(site.domain),
-  title: site.seoTitle,
+  title: {
+    default: site.seoTitle,
+    template: `%s · ${site.brand}`,
+  },
   description: site.seoDescription,
   keywords: [
+    "asesoría de capital inmobiliario",
     "crédito puente construcción",
-    "equity raising inmobiliario",
-    "levantamiento de capital vivienda",
+    "equity inmobiliario vivienda",
     "estructuración financiera inmobiliaria",
-    "asesoría desarrolladores inmobiliarios",
-    "financiamiento de proyectos de vivienda",
+    "levantamiento de capital vivienda",
+    "deuda mezzanine inmobiliaria",
   ],
-  authors: [{ name: site.advisorName }],
+  authors: [{ name: site.brand }],
   openGraph: {
     type: "website",
     locale: "es_MX",
@@ -36,11 +41,6 @@ export const metadata: Metadata = {
     title: site.seoTitle,
     description: site.seoDescription,
     siteName: site.brand,
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: site.seoTitle,
-    description: site.seoDescription,
   },
   robots: { index: true, follow: true },
 };
@@ -51,8 +51,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="es" className={`${inter.variable} ${fraunces.variable}`}>
-      <body>{children}</body>
+    <html lang="es" className={`${inter.variable} ${newsreader.variable}`}>
+      <body>
+        <Header />
+        <main>{children}</main>
+        <Footer />
+      </body>
     </html>
   );
 }
